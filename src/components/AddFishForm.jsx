@@ -1,45 +1,46 @@
-import React from "react";
+import { useRef } from "react";
+import PropTypes from "prop-types";
 
-class AddFishForm extends React.Component {
-  nameRef = React.createRef();
-  priceRef = React.createRef();
-  statusRef = React.createRef();
-  descRef = React.createRef();
-  imageRef = React.createRef();
-  createFish = (event) =>  {
+const AddFishForm = ({ addFish }) => {
+  const nameRef = useRef();
+  const priceRef = useRef();
+  const statusRef = useRef();
+  const descRef = useRef();
+  const imageRef = useRef();
+
+  const createFish = (event) => {
     event.preventDefault();
     const fish = {
-      name: this.nameRef.current.value,
-      price: parseFloat(this.priceRef.current.value),
-      status: this.statusRef.current.value,
-      desc: this.descRef.current.value,
-      image: this.imageRef.current.value,
-    }
-    console.log(fish);
-  }
-  render() {
-    return ( 
-    
-        <form className="fish-edit"  onSubmit={this.createFish}>
-          <input name="name" ref={this.nameRef} type="text" placeholder="Name" />
-          <input name="price" ref={this.priceRef} type="text" placeholder="Price" />
-          <select name="status" ref={this.statusRef} type="text" placeholder="Status" >
-            <option value="available">Fresh!</option>
-            <option value="unavailable">unfresh! </option>
+      name: nameRef.current.value,
+      price: parseFloat(priceRef.current.value),
+      status: statusRef.current.value,
+      desc: descRef.current.value,
+      image: imageRef.current.value,
+    };
 
-          </select>
-          <textarea name="desc" ref={this.descRef} type="text" placeholder="Desc" />
-          <input name="image" ref={this.imageRef} type="text" placeholder="Image" />
-          <button type="submit"> Add Fish</button>
+    addFish(fish);
+    // refresh the form
+    event.currentTarget.reset();
+  };
 
+  return (
+    <form className="fish-edit" onSubmit={createFish}>
+      <input name="name" ref={nameRef} type="text" placeholder="Name" />
+      <input name="price" ref={priceRef} type="text" placeholder="Price" />
+      <select name="status" ref={statusRef} placeholder="Status">
+        <option value="available">Fresh!</option>
+        <option value="unavailable">Unfresh!</option>
+      </select>
+      <textarea name="desc" ref={descRef} placeholder="Desc" />
+      <input name="image" ref={imageRef} type="text" placeholder="Image" />
+      <button type="submit">Add Fish</button>
+    </form>
+  );
+};
 
-
-        </form>
-
-  );}
-
-}
-     
-
+// Adding propTypes validation
+AddFishForm.propTypes = {
+  addFish: PropTypes.func.isRequired,
+};
 
 export default AddFishForm;
